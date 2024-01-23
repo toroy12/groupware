@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  <mapper namespace="com.groupware.mapper.MainMapper">
+  
+  	<resultMap type="Department" id="DepartmentResultMap">
+		<id property="departmentId" column="department_id"/>
+		<result property="departmentName" column="department_name"/>
+	</resultMap>
+  
+  	 <select id="departmentList" resultMap="DepartmentResultMap">
+	  	SELECT
+			department_id, 
+			department_name 
+		FROM 
+			employee_department;  		
+	  </select>
+	  
+	  <insert id="signUp" parameterType="Employee">
+	  	INSERT INTO 
+	  		employee(id , pw, name, gender, department)
+		VALUE 
+			(#{id}, #{pw}, #{name}, #{gender}, #{department}); 
+	  </insert>
+	  
+	  <select id="checkApproval" parameterType="String">
+	  	SELECT 
+	  		approval 
+	  	FROM 
+	  		employee 
+	  	WHERE 
+	  		id = #{id};
+	  </select>
+	  
+	  <select id="checkId" parameterType="String">
+	  	SELECT
+			if(COUNT(*), 1, 0)
+		FROM
+			employee
+		WHERE
+			id = #{id};
+	  </select>
+	  
+	  <select id="checkPw" parameterType="String">
+	  	SELECT
+			pw
+		FROM
+			employee
+		WHERE
+			id = #{id};
+	  </select>
+	  
+	  <select id="getEmployeeInfo" parameterType="String">
+	 	SELECT
+			e.name,
+			ed.department_name as departmentName,
+			p.position_name as positionName
+		FROM
+			employee e
+			INNER JOIN 
+			employee_department ed
+			ON 
+			e.department = ed.department_id
+			INNER JOIN 
+			position p
+			ON 
+			e.position = p.position_id
+		WHERE
+			e.id = #{id};
+	  </select>
+  </mapper>
