@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.groupware.mapper.AdminMapper">
+
+	<select id="employeeList">
+	SELECT
+		e.id,
+		e.name,
+		case 
+			when e.gender='male' then '남' 
+			when e.gender='female' then '여'
+			END AS gender, 
+		ed.department_name as departmentName,
+		p.position_name as positionName,
+		YEAR(NOW()) - left(e.ymd,4) as ymd,
+		e.approval
+	FROM
+		employee e 
+		join
+		employee_department ed
+		on
+		e.department = ed.department_id
+		join
+		position p
+		on
+		e.`position` = p.position_id
+	</select>
+
+</mapper>

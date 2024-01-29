@@ -12,6 +12,7 @@ import com.groupware.dto.Department;
 import com.groupware.dto.Employee;
 import com.groupware.dto.LoginInfo;
 import com.groupware.mapper.MainMapper;
+import com.groupware.service.MainService;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
@@ -20,9 +21,11 @@ import jakarta.servlet.http.HttpSession;
 public class MainController {
 	
 	private final MainMapper mainMapper;
+	private final MainService mainService;
 	
-	public MainController(MainMapper mainMapper) {
+	public MainController(MainMapper mainMapper, MainService mainService) {
 		this.mainMapper = mainMapper;
+		this.mainService = mainService;
 	}
 	
 	@GetMapping("/")
@@ -37,25 +40,18 @@ public class MainController {
 	public String signIn(String id, String pw, RedirectAttributes redirectAttributes, HttpSession session) {
 		
 		String result = "redirect:/";
+		String signIn = mainService.signIn(id, pw);
 		
-		if(mainMapper.checkId(id) == 0) {
+		if(signIn.equals("WrongId") || signIn.equals("WrongPw")) {
 			redirectAttributes.addFlashAttribute("message", "아이디 또는 비밀번호가 틀렸습니다.");
+		}else if(signIn.equals("SuccessLogIn")) {
+			Employee employeeInfo = mainMapper.getEmployeeInfo(id);
+			LoginInfo loginInfo = new LoginInfo(employeeInfo.name, employeeInfo.departmentName, employeeInfo.positionName);
+			session.setAttribute("EMPLOYEE_INFO", loginInfo);
+			result = "redirect:/index";	
 		}else {
-			if(mainMapper.checkPw(id).equals(pw)) {
-				if(mainMapper.checkApproval(id) == 'Y') {
-					Employee employeeInfo = mainMapper.getEmployeeInfo(id);
-					LoginInfo loginInfo = new LoginInfo(employeeInfo.name, employeeInfo.departmentName, employeeInfo.positionName);
-					session.setAttribute("EMPLOYEE_INFO", loginInfo);
-					
-					result = "redirect:/index";
-				}else {
-					result = "redirect:/notYetApproval";
-				}
-			}else {
-				redirectAttributes.addFlashAttribute("message", "아이디 또는 비밀번호가 틀렸습니다.");
-			}
+			result = "redirect:/notYetApproval";
 		}
-		
 		return result;
 	}
 	
@@ -79,9 +75,9 @@ public class MainController {
 	}
 	
 	@PostMapping("/signUp")
-	public String signUp(String id, String pw, String name, String gender, String department) {
+	public String signUp(String id, String pw, String name, String ymd, String gender, String department) {
 		
-		mainMapper.signUp(id, pw, name, gender, department);
+		mainMapper.signUp(id, pw, name, ymd, gender, department);
 		
 		return "redirect:/";
 	}
@@ -104,7 +100,4 @@ public class MainController {
 		
 		return "index";
 	}
-	
-	
-	
 }

@@ -13,8 +13,11 @@ public class Employee {
 	public String pw;
 	public String name;
 	public String gender;
+	public String ymd;
 	public String department;
 	public String departmentName;
 	public String position;
 	public String positionName;
+	public String authority;
+	public Character approval;
 }

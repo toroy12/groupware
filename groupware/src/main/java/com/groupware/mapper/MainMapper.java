@@ -12,7 +12,7 @@ public interface MainMapper {
 	
 	public List<Department> departmentList();
 	
-	public int signUp(String id, String pw, String name, String gender, String department);
+	public int signUp(String id, String pw, String name, String ymd, String gender, String department);
 	
 	public char checkApproval(String id);
 	

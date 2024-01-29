@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layout/default}">
+<th:block layout:fragment="customContents">
+<!-- Begin Page Content -->
+      <div class="container-fluid">
+
+          <!-- Page Heading -->
+          <h1 class="h3 mb-2 text-gray-800">Tables</h1>
+
+          <!-- DataTales Example -->
+          <div class="card shadow mb-4">
+              <div class="card-header py-3">
+              </div>
+              <div class="card-body">
+                  <div class="table-responsive">
+                      <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                          <thead>
+                              <tr>
+                                  <th>이 름</th>
+                                  <th>부 서</th>
+                                  <th>직 책</th>
+                                  <th>성 별</th>
+                                  <th>나 이</th>
+                                  <th>승 인</th>
+                              </tr>
+                          </thead>
+                          <tbody>
+                              <tr th:each="el : ${employeeList}">
+                                  <td>[[${el.name}]]</td>
+                                  <td>[[${el.departmentName}]]</td>
+                                  <td>[[${el.positionName}]]</td>
+                                  <td>[[${el.gender}]]</td>
+                                  <td th:text="${#numbers.formatInteger(el.ymd, 0, 'COMMA')}"></td>
+                                  <td>
+                                  	<th:block th:if="${el.approval} == 'Y'">
+                                  		Y
+                                  	</th:block>
+                                  	<th:block th:unless="${el.approval} == 'Y'">
+	                                  	<select class="form-select approvalSelect" aria-label="Default select example">
+	                                  		<option th:value="N">N</option>
+	                                  		<option th:value="Y">Y</option>
+	                                  	</select>
+	                                  	<button type="submit" id="changeBtn" class="btn btn-outline-secondary btn-sm" disabled>변경</button>
+                                  	</th:block>
+                                  </td>
+                              </tr>
+                          </tbody>
+                      </table>
+                  </div>
+              </div>
+          </div>
+      </div>
+      <!-- /.container-fluid -->
+</th:block>
+</html>

@@ -19,6 +19,8 @@
 
     <!-- Custom styles for this template-->
     <link href="css/sb-admin-2.min.css" rel="stylesheet">
+    
+    <link href="vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
 
 </head>	  
 
@@ -28,11 +30,11 @@
 		<div th:replace="~{fragments/sideFragment :: sideFragment}"></div>
 		<!-- sidebar(좌측메뉴) end -->
 		
-		<!-- contents start -->
+		<!-- Contents Wrapper -->
 		<div id="content-wrapper" class="d-flex flex-column">
 		
          	   <!-- Main Content -->
-		       <div id="content">
+		    <div id="content">
 		          
 		        <!-- navibar(상단메뉴) start -->
 				<div th:replace="~{fragments/naviFragment :: naviFragment}"></div>
@@ -48,6 +50,7 @@
 			<!-- footer(하단메뉴) end -->
 			
 		</div>
+		<!-- End of Content Wrapper -->
 	</div>
 	
 	<!-- Scroll to Top Button-->
@@ -71,6 +74,24 @@
     <!-- Page level custom scripts -->
     <script src="js/demo/chart-area-demo.js"></script>
     <script src="js/demo/chart-pie-demo.js"></script>
-	
+    
+    <!-- Page level plugins -->
+    <script src="vendor/datatables/jquery.dataTables.min.js"></script>
+    <script src="vendor/datatables/dataTables.bootstrap4.min.js"></script>
+
+    <!-- Page level custom scripts -->
+    <script src="js/demo/datatables-demo.js"></script>
+    
+    <script type="text/javascript">
+	    $(document).ready(function() {
+	    	$('.approvalSelect').change(function() {
+	    		var value = $(this).val();
+	    		var firstButton = $(this).siblings('#changeBtn');
+  		
+	   		        firstButton.prop('disabled', false);
+  		
+	    	}) 
+	    });
+    </script>
 </body>
 </html>

@@ -19,9 +19,9 @@
 	  
 	  <insert id="signUp" parameterType="Employee">
 	  	INSERT INTO 
-	  		employee(id , pw, name, gender, department)
+	  		employee(id , pw, name, ymd, gender, department)
 		VALUE 
-			(#{id}, #{pw}, #{name}, #{gender}, #{department}); 
+			(#{id}, #{pw}, #{name}, #{ymd}, #{gender}, #{department}); 
 	  </insert>
 	  
 	  <select id="checkApproval" parameterType="String">
