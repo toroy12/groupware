@@ -46,7 +46,7 @@ public class MainController {
 			redirectAttributes.addFlashAttribute("message", "아이디 또는 비밀번호가 틀렸습니다.");
 		}else if(signIn.equals("SuccessLogIn")) {
 			Employee employeeInfo = mainMapper.getEmployeeInfo(id);
-			LoginInfo loginInfo = new LoginInfo(employeeInfo.name, employeeInfo.departmentName, employeeInfo.positionName);
+			LoginInfo loginInfo = new LoginInfo(id, employeeInfo.name, employeeInfo.departmentName, employeeInfo.positionName);
 			session.setAttribute("EMPLOYEE_INFO", loginInfo);
 			result = "redirect:/index";	
 		}else {
@@ -92,7 +92,7 @@ public class MainController {
 	
 	@GetMapping("/index")
 	public String index(Model model, HttpSession session) {
-		
+			
 		LoginInfo loginInfo = (LoginInfo) session.getAttribute("EMPLOYEE_INFO");
 		
 		model.addAttribute("title", "KDH 주식회사");

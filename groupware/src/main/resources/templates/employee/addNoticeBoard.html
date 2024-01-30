@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layout/default}">
+<th:block layout:fragment="customContents">
+	<!-- Begin Page Content -->
+	<div class="container-fluid">
+
+		<!-- Page Heading -->
+		<h1 class="h3 mb-2 text-gray-800">공지사항 작성</h1>
+
+		<!-- DataTales Example -->
+		<div class="card shadow mb-4">
+			<div class="card-header py-3"></div>
+			<div class="card-body">
+				<div class="form-group">
+					<form th:action="@{/addNoticeBoard}" method="post">
+						<input th:value="${loginInfo.id}" name="id" hidden="hidden">
+						<div class="row">
+							<div class="col-11">
+								<input type="text" class="form-control" name="title" maxlength='50' required>
+							</div>
+							<div class="col form-control">
+								<label for="commentAllow">댓글허용</label>
+								<input type="checkbox" id="commentAllow" value="Y" name="allowComment">
+							</div>
+							<br>
+							<br>
+							<div class="col-12">
+								<textarea class="form-control" rows="20" name="content" maxlength='2000' required></textarea>
+							</div>
+						</div>
+						<br>
+						<button type="submit" class="btn btn-outline-primary" style="float:right">작성</button>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- /.container-fluid -->
+</th:block>
+</html>

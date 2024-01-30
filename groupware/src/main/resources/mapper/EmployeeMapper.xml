@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.groupware.mapper.EmployeeMapper">
+
+	<select id="noticeBoardList">
+		SELECT
+			nb.id AS boardId,
+			nb.title,
+			e.name AS writerName,
+			ed.department_name AS departmentName,
+			p.position_name AS positionName,
+			nb.created_date AS createdDate
+		FROM
+			notice_board nb
+			join 
+			employee e
+			on
+			nb.writer = e.id
+			JOIN 
+			employee_department ed
+			ON 
+			e.department = ed.department_id
+			JOIN 
+			position p
+			ON 
+			e.position = p.position_id
+		ORDER BY 
+			nb.id DESC;
+	</select>
+	
+	<insert id="addNoticeBoard">
+		INSERT INTO
+			notice_board(title, writer, created_date, content, allow_comment)
+		VALUES
+			(#{title}, #{writer}, NOW(), #{content}, #{allowComment});
+	</insert>
+	
+	<select id="detailNoticeBoard" parameterType="String">
+		SELECT
+			nb.id AS boardId,
+			nb.title,
+			e.name AS writerName,
+			ed.department_name AS departmentName,
+			p.position_name AS positionName,
+			nb.created_date AS createdDate,
+			nb.content
+		FROM
+			notice_board nb
+			join 
+			employee e
+			on
+			nb.writer = e.id
+			JOIN 
+			employee_department ed
+			ON 
+			e.department = ed.department_id
+			JOIN 
+			position p
+			ON 
+			e.position = p.position_id
+		WHERE 
+			nb.id = ${boardId};
+	</select>
+	
+	<select id="detailNoticeBoardByBoardId" parameterType="int">
+		SELECT
+			id AS boardId,
+			title,
+			content,
+			allow_comment AS allowComment
+		FROM
+			notice_board
+		WHERE
+			id = ${boardId};
+	</select>
+	
+	<update id="modifyNoticeBoard">
+		UPDATE 
+			notice_board 
+		SET 
+			title = #{title},
+			content = #{content},
+			allow_comment = #{allowComment}
+		WHERE
+			id = ${boardId};
+	</update>
+	
+	<delete id="deleteNoticeBoard" parameterType="int">
+		DELETE FROM notice_board WHERE id = ${boardId};
+	</delete>
+</mapper>

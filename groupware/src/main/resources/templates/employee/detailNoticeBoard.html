@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layout/default}">
+<th:block layout:fragment="customContents">
+	<!-- Begin Page Content -->
+	<div class="container-fluid">
+
+		<!-- Page Heading -->
+		<h1 class="h3 mb-2 text-gray-800">공지사항</h1>
+
+		<!-- DataTales Example -->
+		<div class="card shadow mb-4">
+			<div class="card-header py-3"></div>
+			<div class="card-body">
+				<div class="form-group">
+					<h3 th:text="${detailNoticeBoard.title}"></h3>
+					<div class="row">
+						<div class="col">
+							<span>&#91;[[${detailNoticeBoard.departmentName}]]&#93;&#09;[[${detailNoticeBoard.writerName}]]&#09;[[${detailNoticeBoard.positionName}]]</span>
+						</div>
+						<div class="col" style="text-align: right">
+							<span>[[${detailNoticeBoard.createdDate}]]</span>
+						</div>
+					</div>
+					<hr>
+					<div style="height:447px">
+						<pre><span th:text="${detailNoticeBoard.content}"></span></pre>
+					</div>
+					<br>
+					<div>
+						<a th:href="@{/noticeBoard}" class="btn btn-outline-primary" style="float:left">목록</a>
+						<a th:href="@{/deleteNoticeBoard(boardId=${detailNoticeBoard.boardId})}" class="btn btn-outline-danger" style="float:right">삭제</a>
+						<a th:href="@{/modifyNoticeBoard(boardId=${detailNoticeBoard.boardId})}" class="btn btn-outline-success mr-2" style="float:right">수정</a> 
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- /.container-fluid -->
+</th:block>
+</html>
