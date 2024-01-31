@@ -113,4 +113,15 @@ public class EmployeeController {
 		
 		return "redirect:/noticeBoard";
 	}
+	
+	@GetMapping("calendar")
+	public String calendar(Model model, HttpSession session) {
+		
+		LoginInfo loginInfo = (LoginInfo) session.getAttribute("EMPLOYEE_INFO");
+		
+		model.addAttribute("loginInfo", loginInfo);
+		model.addAttribute("title", "calendar");
+		
+		return "employee/calendar";
+	}
 }
