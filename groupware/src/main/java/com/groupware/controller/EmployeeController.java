@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.groupware.dto.Comment;
 import com.groupware.dto.LoginInfo;
 import com.groupware.dto.NoticeBoard;
 import com.groupware.mapper.EmployeeMapper;
@@ -71,10 +72,12 @@ public class EmployeeController {
 		
 		LoginInfo loginInfo = (LoginInfo) session.getAttribute("EMPLOYEE_INFO");
 		NoticeBoard detailNoticeBoard = employeeMapper.detailNoticeBoard(boardId);
+		List<Comment> commentList = employeeMapper.commentList(boardId);
 		
 		model.addAttribute("title", detailNoticeBoard.title);
 		model.addAttribute("loginInfo", loginInfo);
 		model.addAttribute("detailNoticeBoard", detailNoticeBoard);
+		model.addAttribute("commentList", commentList);
 		
 		return "employee/detailNoticeBoard";
 	}
@@ -113,6 +116,18 @@ public class EmployeeController {
 		
 		return "redirect:/noticeBoard";
 	}
+	
+	@PostMapping("/comment")
+	public String comment(HttpSession session, int boardId, String commentContent){
+		
+		LoginInfo loginInfo = (LoginInfo) session.getAttribute("EMPLOYEE_INFO");
+		
+		employeeMapper.comment(loginInfo.id, boardId, commentContent);
+		
+		return "redirect:/detailNoticeBoard?boardId=" + boardId;
+	}
+		
+	
 	
 	@GetMapping("calendar")
 	public String calendar(Model model, HttpSession session) {

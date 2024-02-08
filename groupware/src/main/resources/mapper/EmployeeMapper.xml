@@ -45,7 +45,8 @@
 			ed.department_name AS departmentName,
 			p.position_name AS positionName,
 			nb.created_date AS createdDate,
-			nb.content
+			nb.content,
+			nb.allow_comment AS allowComment
 		FROM
 			notice_board nb
 			join 
@@ -90,4 +91,36 @@
 	<delete id="deleteNoticeBoard" parameterType="int">
 		DELETE FROM notice_board WHERE id = ${boardId};
 	</delete>
+	
+	<insert id="comment">
+		INSERT INTO
+			comment(comment_writer, created_date, board_id, comment_content)
+		VALUES
+			(#{id}, NOW(), ${boardId}, #{commentContent});
+	</insert>
+	
+	<select id="commentList" parameterType="int">
+		SELECT 
+			e.name, 
+			p.position_name AS positionName, 
+			d.department_name AS departmentName, 
+			c.comment_content AS commentContent, 
+			c.created_date AS createdDate
+		FROM 
+			comment c
+			JOIN 
+			employee e 
+			ON 
+			c.comment_writer = e.id
+			JOIN 
+			position p 
+			ON 
+			e.position = p.position_id
+			JOIN 
+			employee_department d 
+			ON 
+			e.department = d.department_id
+		WHERE
+			c.board_id = ${boardId};
+	</select>
 </mapper>

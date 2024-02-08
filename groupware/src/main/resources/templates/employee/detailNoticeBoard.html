@@ -34,6 +34,42 @@
 						<a th:href="@{/modifyNoticeBoard(boardId=${detailNoticeBoard.boardId})}" class="btn btn-outline-success mr-2" style="float:right">수정</a> 
 					</div>
 				</div>
+				<th:block th:if="${detailNoticeBoard.allowComment} == 'Y'">
+				<br>
+				<hr>
+					<div class="card">
+						<div class="card-body" th:each="cl : ${commentList}">
+							<div>
+								<span class="card-title" style="font-size:13px">
+									&#91;[[${cl.departmentName}]]&#93; [[${cl.name}]] [[${cl.positionName}]]
+								</span>
+							</div>
+							<div class="my-2">
+								<pre><span class="card-text" style="font-size:14px">[[${cl.commentContent}]]</span></pre>
+							</div>
+							<div class="mb-2">
+								<span class="card-text" style="font-size:12px">[[${cl.createdDate}]]</span>
+							</div>
+							<div>
+								<button class="btn btn-outline-primary btn-sm">답글</button>
+							</div>
+						</div>
+					</div>
+					<form th:action="@{/comment}" method="post">
+						<div class="card">
+							<div class="card-header">
+								&#91;[[${loginInfo.departmentName}]]&#93; [[${loginInfo.name}]] [[${loginInfo.positionName}]]
+							</div>
+							<div class="card-body">
+								<input type="text" th:value="${detailNoticeBoard.boardId}" name="boardId" hidden="hidden">
+								<textarea class="card-text form-control" rows="2" maxlength="3000" name="commentContent" style="resize:none; border: none"></textarea>
+								<div style="float:right">
+									<button type="submit" class="btn btn-primary" id="commentBtn">등록</button>
+								</div>
+							</div>
+						</div>
+					</form>
+				</th:block>
 			</div>
 		</div>
 	</div>
