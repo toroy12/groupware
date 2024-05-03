@@ -123,4 +123,37 @@
 		WHERE
 			c.board_id = ${boardId};
 	</select>
+	
+	<select id="messageList">
+		SELECT
+			 m.id AS id, e.name AS writer, m.title AS title, m.created_date AS createdDate
+		FROM
+			message m
+			join
+			employee e
+			on
+			m.writer = e.id
+		WHERE
+			m.recipient = #{recipient};
+	</select>
+	
+	<insert id="writeMessage">
+		INSERT INTO
+			message(writer, recipient, title, content, created_date)
+		VALUES
+			(#{writer}, #{recipient}, #{title}, #{content}, NOW());
+	</insert>
+	
+	<select id="detailMessage">
+		SELECT
+			id, title, writer, recipient, created_date AS createdDate, content
+		FROM
+			message
+		WHERE
+			id = ${id};
+	</select>
+	
+	<delete id="deleteMessage" parameterType="int">
+		DELETE FROM message WHERE id = ${id};
+	</delete>
 </mapper>

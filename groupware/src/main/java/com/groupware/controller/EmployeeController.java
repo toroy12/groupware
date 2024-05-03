@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.groupware.dto.Comment;
 import com.groupware.dto.LoginInfo;
+import com.groupware.dto.Message;
 import com.groupware.dto.NoticeBoard;
 import com.groupware.mapper.EmployeeMapper;
 
@@ -138,5 +139,62 @@ public class EmployeeController {
 		model.addAttribute("title", "calendar");
 		
 		return "employee/calendar";
+	}
+	
+	@GetMapping("/message")
+	public String message(Model model, HttpSession session) {
+		
+		LoginInfo loginInfo = (LoginInfo) session.getAttribute("EMPLOYEE_INFO");
+		
+		List<Message> messageList = employeeMapper.messageList(loginInfo.id);
+		
+		model.addAttribute("loginInfo", loginInfo);
+		model.addAttribute("messageList", messageList);
+		model.addAttribute("title", "message");
+		
+		return "employee/messageList";
+	}
+	
+	@GetMapping("/writeMessage")
+	public String writeMessage(Model model, HttpSession session) {
+		
+		LoginInfo loginInfo = (LoginInfo) session.getAttribute("EMPLOYEE_INFO");
+		
+		model.addAttribute("loginInfo", loginInfo);
+		model.addAttribute("title", "메일 작성");
+		
+		return "employee/writeMessage";
+	}
+	
+	@PostMapping("wrtieMessage")
+	public String writeMessage(String recipient, String title, String content, HttpSession session) {
+		
+		LoginInfo loginInfo = (LoginInfo) session.getAttribute("EMPLOYEE_INFO");
+		
+		employeeMapper.writeMessage(loginInfo.id, recipient, title, content);
+		
+		return "redirect:/message";
+	}
+	
+	@GetMapping("detailMessage")
+	public String detailMessage(Model model, HttpSession session, @RequestParam(value="id") int id) {
+		
+		LoginInfo loginInfo = (LoginInfo) session.getAttribute("EMPLOYEE_INFO");
+		
+		Message detailMessage = employeeMapper.detailMessage(id);
+		
+		model.addAttribute("loginInfo", loginInfo);
+		model.addAttribute("detailMessage", detailMessage);
+		model.addAttribute("title", "메일 보기");
+		
+		return "employee/detailMessage";
+	}
+	
+	@GetMapping("/deleteMessage")
+	public String deleteMessage(@RequestParam(value="id") int id) {
+		
+		employeeMapper.deleteMessage(id);
+		
+		return "redirect:/message";
 	}
 }

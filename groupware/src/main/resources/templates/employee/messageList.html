@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layout/schedule}">
+<th:block layout:fragment="customContents">
+		<div class="container-fluid">
+
+			<!-- DataTales Example -->
+			<div class="card shadow mb-4">
+				<div class="card-header py-3"></div>
+				<div class="card-body">
+					<div class="table-responsive">
+						<table class="table table-bordered" id="dataTable">
+							<tbody th:each="ml : ${messageList}">
+								<tr>
+									<td>읽음/안읽음</td>
+									<td>[[${ml.writer}]]</td>
+									<td><a th:href="@{/detailMessage(id=${ml.id})}">[[${ml.title}]]</a></td>
+									<td>[[${ml.createdDate}]]</td>
+								</tr>
+							</tbody>
+						</table>
+						<a class="btn btn-outline-info" th:href="@{/writeMessage}" style="float:right">메일 쓰기</a>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- /.container-fluid -->
+</th:block>
+</html>

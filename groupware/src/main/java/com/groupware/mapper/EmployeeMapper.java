@@ -5,6 +5,7 @@ import java.util.List;
 import org.apache.ibatis.annotations.Mapper;
 
 import com.groupware.dto.Comment;
+import com.groupware.dto.Message;
 import com.groupware.dto.NoticeBoard;
 
 @Mapper
@@ -25,5 +26,13 @@ public interface EmployeeMapper {
 	public int comment(String id, int boardId, String commentContent);
 	
 	public List<Comment> commentList(int boardId);
+	
+	public List<Message> messageList(String recipient);
+	
+	public int writeMessage(String writer, String recipient, String title, String content);
+	
+	public Message detailMessage(int id);
+	
+	public int deleteMessage(int id);
 
 }
